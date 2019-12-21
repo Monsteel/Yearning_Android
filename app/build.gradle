@@ -49,4 +49,7 @@ dependencies {
 
     //TabLayout
     implementation 'com.android.support:design:29.0.0'
+
+    //ted permission
+    implementation "gun0912.ted:tedpermission:2.1.0"
 }
