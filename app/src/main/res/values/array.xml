@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name = "my_array">
+
+        <item>2019.12</item>
+        <item>2020.01</item>
+        <item>2020.02</item>
+        <item>2020.03</item>
+        <item>2020.04</item>
+
+    </string-array>
+</resources>

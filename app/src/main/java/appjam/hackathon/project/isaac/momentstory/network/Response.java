@@ -2,14 +2,14 @@ package appjam.hackathon.project.isaac.momentstory.network;
 
 public final class Response<Data> {
     private String message;
-    private int status;
+    private boolean status;
     private Data data;
 
-    public int getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

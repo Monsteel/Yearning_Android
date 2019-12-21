@@ -29,6 +29,13 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="upload"
+                android:text="upload" />
+
+            <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

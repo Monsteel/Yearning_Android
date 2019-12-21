@@ -1,5 +1,7 @@
 package appjam.hackathon.project.isaac.momentstory.network;
 
+
+import appjam.hackathon.project.isaac.momentstory.network.service.PostService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -14,7 +16,7 @@ public class NetRetrofit {
     }
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("ServerIP")
+            .baseUrl("http://192.168.211.115:3000/")
             .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
             .build();
 
@@ -22,5 +24,11 @@ public class NetRetrofit {
 //    public LoginService getLogin() {
 //        return login;
 //    }
+
+    PostService post = retrofit.create(PostService.class);
+
+    public PostService getPost() {
+        return post;
+    }
 }
 

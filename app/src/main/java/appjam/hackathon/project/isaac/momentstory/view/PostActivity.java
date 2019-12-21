@@ -18,18 +18,34 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 import appjam.hackathon.project.isaac.momentstory.R;
         import appjam.hackathon.project.isaac.momentstory.databinding.ActivityPostBinding;
-        import appjam.hackathon.project.isaac.momentstory.viewmodel.PostViewModel;
+import appjam.hackathon.project.isaac.momentstory.network.Data;
+import appjam.hackathon.project.isaac.momentstory.network.NetRetrofit;
+import appjam.hackathon.project.isaac.momentstory.network.Response;
+import appjam.hackathon.project.isaac.momentstory.network.response.PostRequest;
+import appjam.hackathon.project.isaac.momentstory.viewmodel.PostViewModel;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -41,7 +57,16 @@ public class PostActivity extends AppCompatActivity {
     private File tempFile;
 
     // View
-    ArrayList<String> imageList = new ArrayList<>();
+    ArrayList<MultipartBody.Part> imageList = new ArrayList<>();
+    RequestBody fileNameBody;
+
+    // Upload Album
+    private String fileExt;
+    private String fileType;
+    private String uploadName;
+
+    // Request
+    PostRequest postRequest = new PostRequest();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +126,6 @@ public class PostActivity extends AppCompatActivity {
 
                 Log.e("TAG", "PICK_FROM_ALBUM photoUri : " + photoUri);
 
-                // ArrayList 배열에 이미지 주소의 값을 저장한다.
-                imageList.add(String.valueOf(photoUri));
-
                 try {
                     String[] proj = {MediaStore.Images.Media.DATA};
 
@@ -138,6 +160,66 @@ public class PostActivity extends AppCompatActivity {
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
 
         binding.imageView.setImageBitmap(originalBm);
-        Toast.makeText(this, imageList.get(0), Toast.LENGTH_SHORT).show();
+
+        uploadProfile(changeToBytes(), tempFile.getName());
+    }
+
+    // 이미지파일을 비트로 바꿉니다
+    private byte[] changeToBytes() {
+
+        int size = (int) tempFile.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(tempFile));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
+    // Profile Upload
+    public void uploadProfile(byte[] imageBytes, String originalName){
+
+        String[] filenameArray = originalName.split("\\.");
+        String extension = filenameArray[filenameArray.length -1];
+
+        fileType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        fileExt = "." + extension;
+
+        uploadName = Integer.toString(new Random().nextInt(999999999));
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse(Objects.requireNonNull(fileType)), imageBytes);
+
+        MultipartBody.Part body = MultipartBody.Part.createFormData("img", uploadName + fileExt, requestFile);
+        fileNameBody = RequestBody.create(MediaType.parse("text/plain"), uploadName);
+
+        imageList.add(body);
+    }
+
+    public void upload(View view){
+
+        postRequest.setTitle("test 제목");
+        postRequest.setDescription("test 내용");
+        postRequest.setGoalTime("2019-12-21T14:10:14.782Z");
+
+        String token = "bearer eyJhbGciOiJIUzI1NiJ9.YWRtaW4.1OR5ifDCi1UIivGQLh_sEcybZqeGnMAcznaAXBGPEy0";
+
+        Call<Response<Data>> res  = NetRetrofit.getInstance().getPost().boardPost(token,imageList,fileNameBody,postRequest.getTitle(),postRequest.getDescription());
+        res.enqueue(new Callback<Response<Data>>() {
+            @Override
+            public void onResponse(Call<Response<Data>> call, retrofit2.Response<Response<Data>> response) {
+                if(response.code() == 200){
+                    Log.e("200", "서버 통신 성공하였습니다.");
+                }
+            }
+            @Override
+            public void onFailure(Call<Response<Data>> call, Throwable t) {
+                Log.e("onFailure", "서버 통신을 실패하였습니다.");
+            }
+        });
     }
 }
