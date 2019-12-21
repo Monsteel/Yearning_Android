@@ -13,6 +13,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F2F0FD"
         android:orientation="vertical"
         tools:context=".MainActivity">
 
@@ -28,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@drawable/cardview_design"
-            app:itemIconTint="@android:color/white"
-            app:itemTextColor="@android:color/white"
+            app:itemIconTint="@drawable/main_icon_design"
+            app:labelVisibilityMode="unlabeled"
             app:menu="@menu/main_menu" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

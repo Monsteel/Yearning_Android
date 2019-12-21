@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setViewModel(mainViewModel);
 
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

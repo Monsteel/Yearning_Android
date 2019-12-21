@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 
 import appjam.hackathon.project.isaac.momentstory.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class fragment3 extends Fragment {
 
 
