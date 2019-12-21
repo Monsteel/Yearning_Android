@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,33 +27,41 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
-    // 4개의 메뉴에 들어갈 Fragment들
 
+    // 3개의 메뉴에 들어갈 Fragment
     private fragment1 menu1Fragment = new fragment1();
     private fragment2 menu2Fragment = new fragment2();
     private fragment3 menu3Fragment = new fragment3();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         binding.setViewModel(mainViewModel);
 
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.layout, menu1Fragment);
+        fragmentTransaction.commit();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView_main_menu);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        binding.bottomNavigationViewMainMenu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 switch (item.getItemId()) {
                     case R.id.action_one:
+                        fragmentTransaction.replace(R.id.layout, menu1Fragment);
+                        fragmentTransaction.commit();
                         return true;
                     case R.id.action_two:
+                        fragmentTransaction.replace(R.id.layout, menu2Fragment);
+                        fragmentTransaction.commit();
                         return true;
                     case R.id.action_three:
+                        fragmentTransaction.replace(R.id.layout, menu3Fragment);
+                        fragmentTransaction.commit();
                         return true;
                 }
                 return false;
