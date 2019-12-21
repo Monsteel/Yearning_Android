@@ -1,6 +1,7 @@
 package appjam.hackathon.project.isaac.momentstory.network;
 
 
+import appjam.hackathon.project.isaac.momentstory.network.service.MainService;
 import appjam.hackathon.project.isaac.momentstory.network.service.PostService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,6 +30,12 @@ public class NetRetrofit {
 
     public PostService getPost() {
         return post;
+    }
+
+    MainService main = retrofit.create(MainService.class);
+
+    public MainService getMain() {
+        return main;
     }
 }
 
