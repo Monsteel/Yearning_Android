@@ -4,9 +4,9 @@
     android:layout_width="60dp"
     android:layout_height="110dp"
     android:layout_gravity="center_horizontal"
-    android:layout_marginLeft="14dp"
+    android:layout_marginLeft="8dp"
     android:layout_marginTop="10dp"
-    android:layout_marginRight="14dp"
+    android:layout_marginRight="8dp"
     android:background="@drawable/cardview_design2"
     android:orientation="vertical">
 
@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/layout2">
 
         <TextView
             android:id="@+id/textView"
@@ -23,13 +24,16 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="WED"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:textColor="#CEC8F0"/>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="18"
-            android:textSize="32dp" />
+            android:textSize="32dp"
+            android:textColor="#303030"
+            android:textStyle="bold"/>
     </LinearLayout>
 </LinearLayout>

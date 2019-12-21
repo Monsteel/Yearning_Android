@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
         import androidx.databinding.DataBindingUtil;
         import androidx.lifecycle.ViewModel;
         import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.content.Intent;
@@ -30,7 +31,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
@@ -68,6 +71,13 @@ public class PostActivity extends AppCompatActivity {
     // Request
     PostRequest postRequest = new PostRequest();
 
+    // SimpleDateFormat
+    Date today = new Date();
+    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy.MM.dd");
+
+    // RecyclerView
+    LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +88,9 @@ public class PostActivity extends AppCompatActivity {
 
         binding.setLifecycleOwner(this);
         binding.setViewModel(postViewmodel);
+
+        binding.textView6.setText(sdf1.format(today));
+        binding.recyclerView.setLayoutManager(layoutManager);
     }
 
     // 권한 체크 매서드
@@ -159,8 +172,6 @@ public class PostActivity extends AppCompatActivity {
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
 
-        binding.imageView.setImageBitmap(originalBm);
-
         uploadProfile(changeToBytes(), tempFile.getName());
     }
 
@@ -202,13 +213,19 @@ public class PostActivity extends AppCompatActivity {
 
     public void upload(View view){
 
-        postRequest.setTitle("test 제목");
-        postRequest.setDescription("test 내용");
-        postRequest.setGoalTime("2019-12-21T14:10:14.782Z");
+        postRequest.setTitle(binding.editText.getText().toString());
+        postRequest.setDescription(binding.editText4.getText().toString());
+        postRequest.setGoalTime(binding.editText2.getText().toString() + ":" + binding.editText3.getText().toString() + ":" + "00");
 
         String token = "bearer eyJhbGciOiJIUzI1NiJ9.YWRtaW4.1OR5ifDCi1UIivGQLh_sEcybZqeGnMAcznaAXBGPEy0";
 
-        Call<Response<Data>> res  = NetRetrofit.getInstance().getPost().boardPost(token,imageList,fileNameBody,postRequest.getTitle(),postRequest.getDescription());
+        Log.e("test", postRequest.getTitle());
+
+        RequestBody sendTitle = RequestBody.create(MediaType.parse("text/plain"),postRequest.getTitle());
+        RequestBody sendDescription = RequestBody.create(MediaType.parse("text/plain"),postRequest.getDescription());
+        RequestBody sendGoalTime = RequestBody.create(MediaType.parse("text/plain"),postRequest.getGoalTime());
+
+        Call<Response<Data>> res  = NetRetrofit.getInstance().getPost().boardPost(token,imageList,fileNameBody,sendTitle,sendDescription,sendGoalTime);
         res.enqueue(new Callback<Response<Data>>() {
             @Override
             public void onResponse(Call<Response<Data>> call, retrofit2.Response<Response<Data>> response) {

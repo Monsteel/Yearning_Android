@@ -22,6 +22,7 @@ public interface PostService {
     Call<Response<Data>> boardPost(@Header("Authorization")String token,
                                    @Part ArrayList<MultipartBody.Part> img,
                                    @Part("img") RequestBody name,
-                                   @Part("title") String title,
-                                   @Part("description") String description);
+                                   @Part("title") RequestBody title,
+                                   @Part("description") RequestBody description,
+                                   @Part("goalTime") RequestBody goalTime);
 }
