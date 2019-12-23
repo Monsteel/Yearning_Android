@@ -16,7 +16,7 @@
 ## Stack
 |                      | Android     | Server        | Web | Design  |
 |:--------------------:|:---------------:|:------------------:|:-----:|:----:|
-| Developer | 김주엽, 이영은 | 김영서       |최이삭 |김수환, 유현주|
+| Developer | 김주엽, 이영은 | 김영서       |최이삭 |이소은|
 | Delong | Daegu SW HighSchool |MarkAny| Daedeok SW HighSchool | Daegu SW HighSchool|
 | Stack | Java, Retrofit2| Node.js| React.Js| |
 | Develop Tool     | Android Studio  | Visual Studio Code | Visual Studio Code | Adobe Photoshop,Figma |
